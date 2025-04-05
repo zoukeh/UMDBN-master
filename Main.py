@@ -47,10 +47,10 @@ if __name__ == "__main__":
     train_opt = TrainOptions().parse()
     train_opt.name = 'CAVE_food' # 'CAVE_toy'
     train_opt.num_theta = 32
-    train_opt.niter = 500
-    train_opt.niter_decay = 3500
-    train_opt.lr = 4e-3
-    # train_opt.lr = 5e-3
+    train_opt.niter = 100
+    train_opt.niter_decay = 4000
+    # train_opt.lr = 4e-3
+    train_opt.lr = 1e-3
     train_opt.lr_decay_iters = 200
     train_opt.display_port = 8097
 #    train_opt.data_name    = 'CAVE'
@@ -94,8 +94,7 @@ if __name__ == "__main__":
     train_opt.lambda_D =0.1
     # beta
     train_opt.lambda_E =0.1 #L_spa0.01
-    # gamma_3
-    train_opt.lambda_F = 1000*train_opt.lambda_A
+
     
     train_dataloader = get_dataloader(train_opt, isTrain=True)
     dataset_size = len(train_dataloader)

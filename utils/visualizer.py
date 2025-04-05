@@ -39,10 +39,10 @@ def compute_ergas(img1, img2, scale):
     
     d = img1 - img2
     ergasroot = 0
-    for i in range(d.shape[0]):
+    for i in range(d.shape[2]):
         ergasroot = ergasroot + np.mean(d[:,:,i]**2)/np.mean(img1[:,:,i])**2
     
-    ergas = 100/scale*np.sqrt(ergasroot/d.shape[0])
+    ergas = 100/scale*np.sqrt(ergasroot/d.shape[2])
     return ergas
 def compute_rmse(img1,img2):
     if len(img1.shape) == 3:
