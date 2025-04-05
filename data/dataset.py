@@ -9,63 +9,6 @@ import scipy.io as io
 import numpy as np
 import cv2
 
-def generate_random_array_with_left_column(height, width, channels, min_val=0, max_val=1, dtype='float'):
-    """
-    生成一个指定尺寸的数组，只有最左边一列有随机值，其他位置为0。
-
-    参数:
-        height (int): 数组的高度（行数）
-        width (int): 数组的宽度（列数）
-        channels (int): 数组的通道数
-        min_val (int or float): 随机数的最小值，默认为 0
-        max_val (int or float): 随机数的最大值，默认为 1
-        dtype (str): 数组的数据类型，默认为 'float'，可选 'int' 或 'float'
-
-    返回:
-        numpy.ndarray: 生成的随机数组
-    """
-    # 创建一个全零数组
-    array = np.zeros((height, width, channels), dtype=np.float32 if dtype == 'float' else np.int32)
-
-    # 生成随机值
-    if dtype == 'float':
-        random_values = np.random.uniform(low=min_val, high=max_val, size=(height, channels))
-    elif dtype == 'int':
-        random_values = np.random.randint(low=min_val, high=max_val, size=(height, channels))
-    else:
-        raise ValueError("dtype 必须是 'int' 或 'float'")
-
-    # 将随机值填充到最左边一列
-    array[:, 0, :] = random_values
-
-    return array
-def generate_random_array(height, width, channels, min_val=0, max_val=1, dtype='float'):
-    """
-    生成一个指定尺寸和随机数范围的数组。
-
-    参数:
-        height (int): 数组的高度（行数）
-        width (int): 数组的宽度（列数）
-        channels (int): 数组的通道数
-        min_val (int or float): 随机数的最小值，默认为 0
-        max_val (int or float): 随机数的最大值，默认为 1
-        dtype (str): 数组的数据类型，默认为 'float'，可选 'int' 或 'float'
-
-    返回:
-        numpy.ndarray: 生成的随机数组
-    """
-    if dtype == 'float':
-        # 生成 [0, 1) 范围的浮点数，再缩放到 [min_val, max_val) 范围
-        random_array = np.random.rand(height, width, channels) * (max_val - min_val) + min_val
-    elif dtype == 'int':
-        # 生成 [min_val, max_val) 范围的整数
-        random_array = np.random.randint(low=min_val, high=max_val, size=(height, width, channels))
-    else:
-        raise ValueError("dtype 必须是 'int' 或 'float'")
-
-    return random_array
-
-
 def spin(original_image, angle):
     # 获取图片尺寸
     height, width = original_image.shape[:2]
