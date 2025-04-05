@@ -1,2 +1,3 @@
 # UMDBN-master
-The code will be submitted soon...
+
+run python main.py.
