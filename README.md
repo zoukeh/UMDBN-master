@@ -1,3 +1,3 @@
 # UMDBN-master
 
-run python main.py.
+run python Main.py.
