@@ -118,18 +118,7 @@ class Dataset(data.Dataset):
         return out_img
 
     def generate_LrHSI(self, img, scale_factor,train_type,x):
-        img_lr = self.downsamplePSF(img, sigma=self.args.sigma, stride=scale_factor)
-        # mat_dict = io.loadmat(
-        #     "./CAVE/paviau_normal_nonrigid_1_center/data.mat")
-        # mat_dict = io.loadmat("D:\PythonProject\Metrics_HSI\picture\paviaU\LrHSI_move.mat")
-        # mat_dict = io.loadmat("D:\PythonProject\Metrics_HSI\picture\lrhsi_move_noise.mat")1.
-        # io.savemat("D:\PythonProject\Metrics_HSI\picture\paviaU\generate_LrHSI.mat", {'LrHSI': img_lr})
-        # img_lr = mat_dict["LrHSI"]
-        # img_lr = spin_hsi(img_lr, 1)
-        # img_lr = move_hsi(img_lr, 1)
-        # noise = generate_random_array_with_left_column(32,32,103,0,0.1,'float')
-        # img_lr = img_lr+noise
-        # io.savemat("D:\PythonProject\Metrics_HSI\picture\lrhsi_move_noise.mat", {'LrHSI': img_lr})
+
         if train_type=='well-regis':
             img_lr = self.downsamplePSF(img, sigma=self.args.sigma, stride=scale_factor)
             return img_lr
@@ -140,7 +129,7 @@ class Dataset(data.Dataset):
             img_lr = self.downsamplePSF(img, sigma=self.args.sigma, stride=scale_factor)
             img_lr= move_hsi(img_lr,x)
         elif train_type=='non':
-            mat_dict = io.loadmat("D:\BaiduNetdiskDownload\M2DTNet-master\CAVE\paviau_normal_nonrigid_"+str(x)+"_center/data.mat")
+            mat_dict = io.loadmat(".\HSI\paviau_normal_nonrigid_"+str(x)+"_center/data.mat")
             img_lr = mat_dict["LrHSI"]
             return img_lr
         elif train_type=='real':
@@ -157,23 +146,12 @@ class Dataset(data.Dataset):
 
     def generate_HrMSI(self, img, sp_matrix,train_type,x):
         if train_type=="non":
-            mat_dict = io.loadmat("D:\BaiduNetdiskDownload\M2DTNet-master\CAVE\paviau_normal_nonrigid_"+str(x)+"_center/data.mat")
-            img_msi = mat_dict["HrMSI"]
-        elif train_type=="real":
-            mat_dict = io.loadmat(
-                "./CAVE/pavia4nonreg_real.mat")
-            # img_msi = mat_dict["HrMSI"][20:180, 20:180, 0:4]
+            mat_dict = io.loadmat(".\HSI\paviau_normal_nonrigid_"+str(x)+"_center/data.mat")
             img_msi = mat_dict["HrMSI"]
         else:
-            # (h, w, c) = img.shape
-            # self.msi_channels = sp_matrix.shape[1]
-            # if sp_matrix.shape[0] == c:
-            #     img_msi = np.dot(img.reshape(w * h, c), sp_matrix).reshape(h, w, sp_matrix.shape[1])
-            #     print(img_msi.size)
-            # else:
-            #     raise Exception("The shape of sp matrix doesnot match the image")
+
             mat_dict = io.loadmat(
-                "./CAVE/paviau_normal_nonrigid_1_center/data.mat")
+                ".\HSI\paviau_normal_nonrigid_1_center/data.mat")
             img_msi = mat_dict["HrMSI"]
         return img_msi
 

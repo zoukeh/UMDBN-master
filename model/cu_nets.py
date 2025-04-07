@@ -30,7 +30,6 @@ class CUNets(BaseModel):
             parser.add_argument('--lambda_F', type=float, default=1.0, help='weight for lrmsi      gamma')
             parser.add_argument('--lambda_G', type=float, default=1.0, help='weight for msi_s_msi  ?')
             parser.add_argument('--lambda_H', type=float, default=0.0, help='non')
-            parser.add_argument('--num_theta', type=int, default=256)
             parser.add_argument('--n_res', type=int, default=3)
             parser.add_argument('--avg_crite', type=str, default='No')
             parser.add_argument('--isCalSP', type=str, default='Yes')
@@ -259,7 +258,7 @@ class CUNets(BaseModel):
         # self.loss_lr = self.loss_lr_pixelwise + self.loss_lr_s_sumtoone
         # lr-2: PSF
         # self.loss_msi_ss_lr =  self.criterionPixelwise(self.real_lhsi, self.rec_hrhsi2lrhsi) * self.opt.lambda_G
-        self.loss_msi_ss_lr = self.criterionPixelwise(self.rec_aff_lrhsi, self.rec_hrhsi2lrhsi) * self.opt.lambda_G
+        self.loss_msi_ss_lr = self.criterionPixelwise(self.rec_aff_lrhsi, self.rec_hrhsi2lrhsi) * self.opt.lambda_B
 
         # msi-1
         self.loss_msi_pixelwise = self.criterionPixelwise(self.real_hmsi, self.rec_hrmsi) * self.opt.lambda_B
@@ -270,7 +269,7 @@ class CUNets(BaseModel):
         self.loss_msi = self.loss_msi_pixelwise + self.loss_msi_s_sumtoone + self.loss_msi_sparse
         # self.loss_msi = self.loss_msi_pixelwise + self.loss_msi_s_sumtoone
         # msi-2: SRF
-        self.loss_msi_ss_msi = self.criterionPixelwise(self.real_hmsi, self.rec_hrhsi2hrmsi) * self.opt.lambda_C
+        self.loss_msi_ss_msi = self.criterionPixelwise(self.real_hmsi, self.rec_hrhsi2hrmsi) * self.opt.lambda_A
         # lrmsi
         self.loss_lrmsi_pixelwise = self.criterionPixelwise(self.rec_lrhsi_lrmsi,
                                                             self.rec_hrmsi_lrmsi) * self.opt.lambda_F

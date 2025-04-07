@@ -62,11 +62,8 @@ if __name__ == "__main__":
     typeoftrain, x = traintypechoose(train_opt.train_type)
     if typeoftrain in ["well-regis", "move", "spin"]:
         train_opt.srf_name     = 'paviaU_srf' # 'Landsat8_BGR'
-        train_opt.mat_name     = 'pavia4CucaNet' # 'chart_and_stuffed_toy_ms'w
+        train_opt.mat_name     = 'paviaU' # 'chart_and_stuffed_toy_ms'w
         # train_opt.mat_name = 'data'  # 'chart_and_stuffed_toy_ms'
-    elif typeoftrain == "real":
-        train_opt.srf_name     = 'Real_SRF'  # 'Landsat8_BGR'
-        train_opt.mat_name     = 'data'  # 'chart_and_stuffed_toy_ms'
     elif typeoftrain == "non":
         train_opt.mat_name     = 'paviau_normal_nonrigid_'+str(1)+'_center/data' #非线性变换
         train_opt.srf_name = 'paviaU_srf'
@@ -79,28 +76,21 @@ if __name__ == "__main__":
     train_opt.isCalSP = 'Yes'
     train_opt.display_port = 8097
 
-    # trade-off parameters: could be better tuned
     # for auto-reconstruction
     train_opt.lambda_A = 10#L_res
     # train_opt.lambda_A = 10
     train_opt.lambda_B = 10 #B=G L_reg
-    # gamma_1
-    train_opt.lambda_C = train_opt.lambda_A
-    # gamma_2
-    # train_opt.lambda_G = 10
-    train_opt.lambda_G = train_opt.lambda_B
     # alpha
-    # train_opt.lambda_D = 0.1 #L_cons
-    train_opt.lambda_D =0.1
+    train_opt.lambda_D = 0.1
     # beta
-    train_opt.lambda_E =0.1 #L_spa0.01
+    train_opt.lambda_E = 0.1 #L_spa0.01
 
     
     train_dataloader = get_dataloader(train_opt, isTrain=True)
     dataset_size = len(train_dataloader)
     train_model = create_model(train_opt, train_dataloader.hsi_channels,
-                               # train_dataloader.msi_channels,
-                               4,
+                               train_dataloader.msi_channels,
+                               # 4,
                                train_dataloader.lrhsi_height,
                                train_dataloader.lrhsi_width,
                                train_dataloader.sp_matrix,
@@ -137,19 +127,6 @@ if __name__ == "__main__":
                 # visualizer.print_current_losses(epoch, epoch_iter, losses, t)
                 print("epoch:"+str(epoch)+" epoch_iter:"+str(epoch_iter)+"losses:"+str(losses)+" t:"+str(t))
                 if train_opt.display_id > 0:
-      # visualizer.plot_current_losses(epoch, float(epoch_iter) / dataset_size, train_opt, losses)
-                    # visualizer.display_current_results(train_model.get_current_visuals(),
-                    #                                    train_model.get_image_name(), epoch, True,
-                    #                                    win_id=[1])
-                    #
-                    # visualizer.plot_spectral_lines(train_model.get_current_visuals(), train_model.get_image_name(),
-                    #                                visual_corresponding_name=train_model.get_visual_corresponding_name(),
-                    #                                win_id=[2,3])
-                    # visualizer.plot_psnr_sam(train_model.get_current_visuals(), train_model.get_image_name(),
-                    #                          epoch, float(epoch_iter) / dataset_size,
-                    #                          train_model.get_visual_corresponding_name())
-                    #
-                    # visualizer.plot_lr(train_model.get_LR(), epoch)
                     visuals = train_model.get_current_visuals()
                     """psnr and sam updating with epoch"""
                     real_hsi = visuals["real_hhsi"].data.cpu().float().numpy()[0]
@@ -171,10 +148,6 @@ if __name__ == "__main__":
                         best_epoch = epoch
                     sio.savemat(os.path.join("./Results/", ''.join(data['name']) + '_well3.mat'),
                         {'recHSI': rec_hsi.transpose(1, 2, 0)})
-                    # sio.savemat("generate_real_ttsr.mat",{'reconstructionLHSI':rec_hsi})
-                    #     sio.savemat("TTSR_T_real.mat",{"T":H})
-                    #     sio.savemat("STN.mat", {"STN": stn})
-                    #     sio.savemat("lr_abundance.mat",{"lr_a":lr_a})
                     print("Best Epoch: "+str(best_epoch)+" "+str(best_psnr))
                     print ("Epoch:"+str(epoch)+" PSNR: "+str(result_psnr)+" SAM: "+str(result_sam)+" RMSE: "+str(result_rmse)+" ERAGS:"+str(result_erags))
                     # with open("trainlog.txt","w") as file:

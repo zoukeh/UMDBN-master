@@ -7,15 +7,9 @@ def get_option_setter(model_name):
     return model_class.modify_commandline_options
 
 def find_model_using_name(model_name):
-    # Given the option --model [modelname],
-    # the file "models/modelname_model.py"
-    # will be imported.
     model_filename = "model." + model_name
     modellib = importlib.import_module(model_filename)
 
-    # In the file, the class called ModelNameModel() will
-    # be instantiated. It has to be a subclass of BaseModel,
-    # and it is case-insensitive.
     model = None
     target_model_name = model_name.replace('_', '')
     for name, cls in modellib.__dict__.items():
