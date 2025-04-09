@@ -17,22 +17,7 @@ import scipy.io as sio
 import numpy as np
 import random
 
-def traintypechoose( traintype):
-    if "spin" in traintype:
-        angle = traintype.split('spin')[1]
-        return "spin", angle
-    elif "move" in traintype:
-        pixel = traintype.split('move')[1]
-        return "move", pixel
-    elif "non" in traintype:
-        pixel = traintype.split('non')[1]
-        return "non", pixel
-    elif "real" in traintype:
-        return "real", None
-    elif "well-regis" in traintype:
-        return "well-regis", None
-    else:
-        raise Exception("please input the right traintype")
+
 def setup_seed(seed):
      torch.manual_seed(seed)
      torch.cuda.manual_seed_all(seed)
@@ -53,20 +38,13 @@ if __name__ == "__main__":
     train_opt.lr = 1e-3
     train_opt.lr_decay_iters = 200
     train_opt.display_port = 8097
-#    train_opt.data_name    = 'CAVE'
-#     train_opt.data_name    = 'CAVE'
-#     train_opt.data_name = 'CAVE/wadc_normal_nonrigid2568_0_center'
-    train_opt.data_name ='CAVE'
-    #     train_opt.display_freq = 'CAVE/real_normal_nonrigid_0_center'
+
+    train_opt.data_name ='HSI'
     train_opt.train_type = 'well-regis'
-    typeoftrain, x = traintypechoose(train_opt.train_type)
-    if typeoftrain in ["well-regis", "move", "spin"]:
-        train_opt.srf_name     = 'paviaU_srf' # 'Landsat8_BGR'
-        train_opt.mat_name     = 'paviaU' # 'chart_and_stuffed_toy_ms'w
+
+    train_opt.srf_name     = 'paviaU_srf' # 'Landsat8_BGR'
+    train_opt.mat_name     = 'paviaU'
         # train_opt.mat_name = 'data'  # 'chart_and_stuffed_toy_ms'
-    elif typeoftrain == "non":
-        train_opt.mat_name     = 'paviau_normal_nonrigid_'+str(1)+'_center/data' #非线性变换
-        train_opt.srf_name = 'paviaU_srf'
     train_opt.scale_factor = 8
     train_opt.print_freq   = 10
     train_opt.save_freq    = 50
@@ -98,7 +76,6 @@ if __name__ == "__main__":
     
     train_model.setup(train_opt)
     # visualizer = Visualizer(train_opt, train_dataloader.sp_matrix)
-        
     total_steps = 0
     best_psnr = 0
     best_epoch = 0
