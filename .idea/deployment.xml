@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="zoukeh@10.120.16.23:22 password" deleteMissingItems="true" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="zouke@139.199.171.76:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/zouke/ZK_Project/MachineLearningPractice-main/kmind-llm-sdadsd/ECCV2020_CUCaNet-master" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="zouke@139.199.171.76:22 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="zoukeh@10.120.16.23:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/data/ailab/2022/zk/ECCV2020_CUCaNet-master" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
