@@ -530,23 +530,14 @@ class DefomableBlock(nn.Module):
         self.to_q = nn.Conv2d(chanHS, chanHS, kernel_size=3,padding=1)
         self.to_k = nn.Conv2d(chanHS, chanHS, kernel_size=3,padding=1)
         self.to_v = nn.Conv2d(chanHS, chanHS, kernel_size=3,padding=1)
-        # self.to_q = nn.Conv2d(chanHS, chanHS, kernel_size=1,padding=0)
-        # self.to_k = nn.Conv2d(chanHS, chanHS, kernel_size=1,padding=0)
-        # self.to_v = nn.Conv2d(chanHS, chanHS, kernel_size=1,padding=0)
-        # self.to_q = Conv3DBlock(1,1)
-        # self.to_k = Conv3DBlock(1,1)
-        # self.to_v = Conv3DBlock(1,1)
         # self.replace_conv = nn.Conv2d(chanHS*2, chanHS, kernel_size=3,padding=1) #用于消融实验
     def forward(self, moving_image, fixed_image):
-        # for b in self.conv:
-        #     fixed_image = b(fixed_image)
-        q = self.to_q(fixed_image)
-        k = self.to_k(moving_image)
-        v = self.to_v(moving_image)
+        q = self.to_q(moving_image)
+        k = self.to_k(fixed_image)
+        v = self.to_v(fixed_image)
 
         spatial_attention = torch.matmul(q, k.transpose(-1, -2))
         x = torch.matmul(spatial_attention,v)
-        # x = self.replace_conv(torch.cat([moving_image,fixed_image], dim=1))
         deformation_matrix = self.unet(x).permute(0, 2, 3, 1) #b,h,w,2
         registered_image = self.spatial_transform(moving_image.permute(0, 2, 3, 1), deformation_matrix).permute(0, 3, 1,
                                                                                                                 2)
